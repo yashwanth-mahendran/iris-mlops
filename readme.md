@@ -47,6 +47,15 @@ python train.py
 uvicorn app:app --reload --host 0.0.0.0 --port 8000
 ```
 
+### Docker Deployment
+```bash
+# Build Docker image
+docker build -t iris-mlops .
+
+# Run container
+docker run -p 8000:8000 iris-mlops
+```
+
 ### API Endpoints
 - **API Documentation**: http://localhost:8000/docs
 - **Health Check**: http://localhost:8000/health
@@ -86,6 +95,8 @@ iris-mlops/
 ├── train.py          # Model training with MLflow logging
 ├── predict.py        # Model inference with MLflow logging
 ├── app.py            # FastAPI application for model serving
+├── Dockerfile        # Docker container configuration
+├── requirements.txt  # Python dependencies
 ├── iris_model.pkl    # Trained model artifact
 ├── data/             # Data directory (DVC tracked)
 └── readme.md         # This file
