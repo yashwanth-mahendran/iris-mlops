@@ -11,7 +11,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Install dependencies
-pip install scikit-learn joblib mlflow "dvc[s3]"
+pip install scikit-learn joblib mlflow "dvc[s3]" fastapi uvicorn
 ```
 
 ### 2. DVC Setup
@@ -42,7 +42,33 @@ mlflow server --host 127.0.0.1 --port 5000
 python train.py
 ```
 
-### Make Predictions
+### Start FastAPI Server
+```bash
+uvicorn app:app --reload --host 0.0.0.0 --port 8000
+```
+
+### API Endpoints
+- **API Documentation**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+- **Prediction**: POST http://localhost:8000/predict
+
+### Example API Usage
+```bash
+# Using curl
+curl -X POST "http://localhost:8000/predict" \
+     -H "Content-Type: application/json" \
+     -d '{
+       "sepal_length": 5.1,
+       "sepal_width": 3.5,
+       "petal_length": 1.4,
+       "petal_width": 0.2
+     }'
+
+# Response:
+# {"prediction": "Setosa", "confidence": 0.99}
+```
+
+### Make Predictions (CLI)
 ```bash
 python predict.py
 ```
@@ -59,6 +85,7 @@ python predict.py
 iris-mlops/
 ├── train.py          # Model training with MLflow logging
 ├── predict.py        # Model inference with MLflow logging
+├── app.py            # FastAPI application for model serving
 ├── iris_model.pkl    # Trained model artifact
 ├── data/             # Data directory (DVC tracked)
 └── readme.md         # This file
