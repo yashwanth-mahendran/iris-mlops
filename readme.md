@@ -201,9 +201,13 @@ python predict.py
 ## Project Structure
 ```
 iris-mlops/
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml     # GitHub Actions CI/CD pipeline
 ├── train.py          # Model training with MLflow logging
 ├── predict.py        # Model inference with MLflow logging
 ├── app.py            # FastAPI application for model serving
+├── test_app.py       # Test cases for API and model
 ├── Dockerfile        # Docker container configuration
 ├── requirements.txt  # Python dependencies
 ├── deploy/           # Kubernetes deployment manifests
@@ -214,3 +218,22 @@ iris-mlops/
 ├── data/             # Data directory (DVC tracked)
 └── readme.md         # This file
 ```
+
+## GitHub Actions Setup
+
+### Required Secrets
+Add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
+
+- `DOCKER_USERNAME`: Your Docker Hub username
+- `DOCKER_PASSWORD`: Your Docker Hub password or access token
+
+### Pipeline Features
+- **Automated testing**: Runs tests on every push/PR
+- **Model training**: Trains model in CI environment
+- **Docker build**: Builds and pushes images to Docker Hub
+- **Deployment**: Updates Kubernetes manifests
+
+### Workflow Triggers
+- Push to `main` or `develop` branches
+- Pull requests to `main` branch
+- Only deploys on `main` branch pushes
