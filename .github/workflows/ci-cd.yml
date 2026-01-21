@@ -24,7 +24,7 @@ jobs:
         pip install pytest
     
     - name: Train model
-      run: python train.py
+      run: python train_ci.py
     
     - name: Test API
       run: |
